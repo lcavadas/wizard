@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <link rel="stylesheet" href="wizard.css" type="text/css"/>
+
+    <!-- source files -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="wizard.js"></script>
+    <style type="text/css">
+        .step {
+            margin: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var props = {
+                cancel: "cancel",
+                previous: "previous",
+                next: "next",
+                finish: 'finish',
+                previous_animation: function (toHide, toShow, callback) {
+                    toHide.hide('slide', {
+                        direction: "right"
+                    }, 600, function () {
+                        toShow.show('slide', {
+                            direction: "left"
+                        }, 600, callback)
+                    });
+                },
+                next_animation: function (toHide, toShow, callback) {
+                    toHide.hide('slide', {
+                        direction: "left"
+                    }, 600, function () {
+                        toShow.show('slide', {
+                            direction: "right"
+                        }, 600, callback);
+                    });
+                },
+                onfinish: function () {
+                    console.log('finished');
+                    wizard.reset();
+                    return false;
+                },
+                onstart: function () {
+                    console.log('start');
+                },
+                oncancel: function () {
+                    console.log('cancelled');
+                    wizard.reset();
+                    return false;
+                },
+                steps: [
+                    {
+                        content: "div#st1",
+                        description: 'custom step one',
+                        before_next: function () {
+                            console.log('step 1 before next')
+                        }
+                    },
+                    {
+                        content: "div#st2",
+                        description: 'custom step two'
+                    },
+                    {
+                        content: "div#st3",
+                        description: 'custom step three',
+                        before_previous: function () {
+                            console.log('step 1 before previous')
+                        }
+                    }
+                ]
+            };
+            $("div#wizard").wizard({});
+            var wizard = $("div#wizard2").wizard(props);
+        })
+    </script>
+</head>
+<body>
+<div id="wizard" class="wizard" style="width: 800px; height: 600px"></div>
+<div id="wizard2" class="wizard" style="width: 600px; height: 400px">
+    <div id="st1" class="step">Custom step one</div>
+    <div id="st2" class="step">Custom step two</div>
+    <div id="st3" class="step">Custom step three</div>
+</div>
+</body>
+</html>
